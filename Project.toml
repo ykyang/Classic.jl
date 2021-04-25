@@ -1,0 +1,4 @@
+name = "Classic"
+uuid = "fea3ebb9-c65d-4d37-9e20-d2b6690d1d4a"
+authors = ["Yi-Kun Yang <ykyang@gmail.com>"]
+version = "0.1.0"
