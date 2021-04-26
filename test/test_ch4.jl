@@ -112,7 +112,8 @@ function test_SimpleEdge(io::IO)
     @test 2 == e[1]
     @test 7 == e[2]
 
-    r = Classic.reverse(e)
+    #r = Classic.reverse(e)
+    r = Base.reverse(e)
     @test e[1] == r[2]
     @test e[2] == r[1]
 end
@@ -190,7 +191,8 @@ function test_WeightedEdge(io::IO)
     @test 7 == e[2]
     @test 13 == weight(e)
 
-    e = Classic.reverse(e)
+    #e = Classic.reverse(e)
+    e = reverse(e)
     @test 3 == e[2]
     @test 7 == e[1]
     @test 13 == weight(e)

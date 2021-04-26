@@ -13,7 +13,8 @@ export Cell, Maze
 
 include("edge.jl")
 export Edge, UnweightedGraph, SimpleEdge, WeightedEdge, WeightedGraph
-export reverse, weight
+#export reverse, weight
+export weight
 
 include("graph.jl")
 export Graph

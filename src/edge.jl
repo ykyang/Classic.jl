@@ -13,7 +13,7 @@ function Base.getindex(edge::Edge, i::Int64) #where {E<:Edge}
     return edge.vertices[i]
 end
 
-function reverse(e::E) where {E<:Edge}
+function Base.reverse(e::E) where {E<:Edge}
     return E(Base.reverse(e.vertices))
 end
 
@@ -58,6 +58,6 @@ function weight(e::WeightedEdge)
     e.weight
 end
 
-function reverse(e::WeightedEdge)
+function Base.reverse(e::WeightedEdge)
     WeightedEdge(e[2], e[1], weight(e))
 end
