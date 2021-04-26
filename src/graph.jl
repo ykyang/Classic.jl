@@ -99,7 +99,11 @@ function Base.show(io::IO, g::Graph)
 end
 
 
+"""
+    UnweightedGraph{V,E<:Edge} <: Graph{V,E}
 
+An unweighted graph that uses any type of node and `Edge`
+"""
 struct UnweightedGraph{V,E<:Edge} <: Graph{V,E}
     vertices::Vector{V}            # list of vertices
     edges_lists::Vector{Vector{E}} # edges_lists[i] -> list of edges that connects to vertices[i]
@@ -116,6 +120,11 @@ function UnweightedGraph{V,E}(v::Vector{V}) where {V,E<:Edge}
     return me
 end
 
+"""
+    WeightedGraph{V,E<:WeightedEdge} <: Graph{V,E}
+
+A weighted graph that uses any type of node with `WeightedEdge`
+"""
 struct WeightedGraph{V,E<:WeightedEdge} <: Graph{V,E}
     vertices::Vector{V}            # list of vertices
     edges_lists::Vector{Vector{E}} # edges_lists[i] -> list of edges that connects to vertices[i]

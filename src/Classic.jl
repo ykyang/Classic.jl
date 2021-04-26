@@ -12,7 +12,7 @@ include("maze.jl")
 export Cell, Maze
 
 include("edge.jl")
-export Edge, UnweightedGraph, SimpleEdge, WeightedGraph, WeightedEdge
+export Edge, UnweightedGraph, SimpleEdge, WeightedEdge, WeightedGraph
 export reverse, weight
 
 include("graph.jl")

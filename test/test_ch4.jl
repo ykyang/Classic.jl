@@ -10,7 +10,11 @@ else
     using Classic
 end
 
+"""
+    init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
 
+Create an example graph with unweighted edges
+"""
 function init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
     #cc = Classic
 
@@ -21,7 +25,7 @@ function init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
     ])
     
     append!(g,cities)
-
+    
     add!(g, "Seattle", "Chicago")
     add!(g, "Seattle","San Francisco")
     add!(g, "San Francisco", "Riverside")
@@ -52,6 +56,11 @@ function init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
     return cities
 end
 
+"""
+    init!(g::Classic.WeightedGraph{V,E}) where {V,E<:Classic.WeightedEdge}
+
+Create a example graph with weighted edges
+"""
 function init!(g::Classic.WeightedGraph{V,E}) where {V,E<:Classic.WeightedEdge}
     #cc = Classic
 
@@ -261,8 +270,7 @@ function test_DijkstraNode(io::IO)
 end
 
 function test_dijkstra(io::IO)
-    #cc = Classic
-
+    # Create a default graph
     city_graph = WeightedGraph{String,WeightedEdge}()
     cities = init!(city_graph)
     @test length(cities) == length(city_graph.vertices)
