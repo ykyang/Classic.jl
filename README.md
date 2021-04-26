@@ -49,4 +49,4 @@ else
     using Classic
 end
 ```
-This workaround is from [Writing tests in VS Code](https://discourse.julialang.org/t/writing-tests-in-vs-code-workflow-autocomplete-and-tooltips/57488) and subsequentlly from [None of the symbols in my package seem to be recognized](https://github.com/julia-vscode/julia-vscode/issues/800).
+This workaround is from [Writing tests in VS Code](https://discourse.julialang.org/t/writing-tests-in-vs-code-workflow-autocomplete-and-tooltips/57488) and subsequently from [None of the symbols in my package seem to be recognized](https://github.com/julia-vscode/julia-vscode/issues/800).
