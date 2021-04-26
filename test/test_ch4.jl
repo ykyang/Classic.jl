@@ -2,7 +2,7 @@
 
 using Test, DataStructures
 #using Classic
-#import .Classic as cc
+#import Classic as cc
 cc = Classic
 
 function init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
@@ -17,18 +17,18 @@ function init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
     append!(g,cities)
 
     add!(g, "Seattle", "Chicago")
-    cc.add!(g, "Seattle","San Francisco")
-    cc.add!(g, "San Francisco", "Riverside")
-    cc.add!(g, "San Francisco", "Los Angeles")
-    cc.add!(g, "Los Angeles", "Riverside")
-    cc.add!(g, "Los Angeles", "Phoenix")
-    cc.add!(g, "Riverside", "Phoenix")
-    cc.add!(g, "Riverside", "Chicago")
-    cc.add!(g, "Phoenix", "Houston")
-    cc.add!(g, "Dallas", "Chicago")
-    cc.add!(g, "Dallas", "Atlanta")
-    cc.add!(g, "Dallas", "Houston")
-    cc.add!(g, "Houston", "Atlanta")
+    add!(g, "Seattle","San Francisco")
+    add!(g, "San Francisco", "Riverside")
+    add!(g, "San Francisco", "Los Angeles")
+    add!(g, "Los Angeles", "Riverside")
+    add!(g, "Los Angeles", "Phoenix")
+    add!(g, "Riverside", "Phoenix")
+    add!(g, "Riverside", "Chicago")
+    add!(g, "Phoenix", "Houston")
+    add!(g, "Dallas", "Chicago")
+    add!(g, "Dallas", "Atlanta")
+    add!(g, "Dallas", "Houston")
+    add!(g, "Houston", "Atlanta")
     cc.add!(g, "Houston", "Miami")
     cc.add!(g, "Atlanta", "Chicago")
     cc.add!(g, "Atlanta", "Washington")
@@ -140,7 +140,7 @@ Sovle shortest route of `UnweightedGraph`
 function test_bfs(io::IO)
     #cc = Classic
 
-    g = cc.UnweightedGraph{String,cc.SimpleEdge}()
+    g = Classic.UnweightedGraph{String,cc.SimpleEdge}()
     cities = init!(g)
     @test length(cities) == length(g.vertices)
     @test length(cities) == length(g.edges_lists)
@@ -232,7 +232,7 @@ end
 function test_DijkstraNode(io::IO)
     #cc = Classic
 
-    node = cc.DijkstraNode(13, 0.1)
+    node = DijkstraNode(13, 0.1)
     @test 13 == node.index 
     @test 0.1 == node.distance
 

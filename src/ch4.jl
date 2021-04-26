@@ -266,7 +266,11 @@ function Base.print(io::IO, g::WeightedGraph, edges::Vector{WeightedEdge})
     end
 end
 
+"""
+    DijkstraNode
 
+Node for use in Dijkstra algorithm
+"""
 struct DijkstraNode
     index::Int64
     distance::Float64
