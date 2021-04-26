@@ -1,5 +1,12 @@
 module Classic
 
-greet() = print("Hello World!")
+using DataStructures
 
-end # module
+include("ch2.jl")
+
+include("ch4.jl")
+export add!
+export UnweightedGraph, SimpleEdge, WeightedGraph, WeightedEdge
+export DijkstraNode
+
+end
