@@ -35,3 +35,18 @@ Run test in package mode
 julia> ]
 (Classic) pkg> test Classic
 ```
+## Test code completion and tooltip problem
+The code completion and code tooltip does not work in VS Code without
+the following at the top of `runtests.jl`.  In order to run individual
+tests, also include this in individual test files.
+```julia
+if isdefined(@__MODULE__, :LanguageServer)
+    # invoked by VS Code
+    include("../src/Classic.jl")
+    using .Classic
+else
+    # invoked during test
+    using Classic
+end
+```
+This workaround is from [Writing tests in VS Code](https://discourse.julialang.org/t/writing-tests-in-vs-code-workflow-autocomplete-and-tooltips/57488) and subsequentlly from [None of the symbols in my package seem to be recognized](https://github.com/julia-vscode/julia-vscode/issues/800).
