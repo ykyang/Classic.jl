@@ -284,18 +284,20 @@ function test_dijkstra(io::IO)
     #     path_db::Dict{Int64,WeightedEdge}
     # end
     dijkstra_result = dijkstra(city_graph, "Los Angeles")
+    @test DijkstraResult == typeof(dijkstra_result)
     println(io, dijkstra_result)
     #@show dijkstra_result
 
     #ditance_db = Dict{V,Float64}()
-    distance_db = array_to_db(city_graph, dijkstra_result.distances)
-    println(io, "Distance from Los Angeles:")
+    distance_db = distances_to_distance_db(city_graph, dijkstra_result.distances)
+    println(io, "Distance from Los Angeles to:")
     println(io, distance_db)
     #@show distance_db
 
     # path::Vector{E}
-    path = path_db_to_path(
-            city_graph, dijkstra_result.path_db, 
+    #path = path_db_to_path(
+    path = shortest_path(
+            dijkstra_result.path_db, 
             index_of(city_graph, "Los Angeles"),
             index_of(city_graph, "Boston")
         )

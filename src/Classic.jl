@@ -21,6 +21,7 @@ export Graph
 export add!, index_of, is_goal, next_points
 
 include("algorithm.jl")
-export array_to_db, a_star, bfs, dfs, dijkstra, mst, path_db_to_path
+export DijkstraResult
+export distances_to_distance_db, a_star, bfs, dfs, dijkstra, mst, shortest_path
 
 end

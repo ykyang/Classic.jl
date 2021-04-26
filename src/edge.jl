@@ -5,6 +5,7 @@ An abstract edge for working with graph
 
 * `getindex` : get the first and second nodes
 * `string` : pretty print
+* `reverse` : reverse the 2 ends
 
 """
 abstract type Edge end
@@ -20,6 +21,11 @@ end
 Base.string(e::Edge) = "$(e[1]) -> $(e[2])"
 Base.show(io::IO, x::Edge) = print(io, string(x))
 
+"""
+    SimpleEdge <: Edge
+
+A simple implementation of `Edge` which only has 2 points
+"""
 struct SimpleEdge <: Edge
     # u::Int64
     # v::Int64
@@ -32,10 +38,14 @@ struct SimpleEdge <: Edge
     end
 end
 
-# function reverse(e::SimpleEdge)
-#     return SimpleEdge(Base.reverse(e.vertices))
-# end
+"""
+    WeightedEdge <: Edge
 
+A weighted version of `Edge` that has 2 points and a weight
+
+* `weight`
+* `reverse`
+"""
 struct WeightedEdge <: Edge
     vertices::Tuple{Int64,Int64}
     weight::Float64
@@ -52,7 +62,6 @@ Base.:(==)(x::WeightedEdge, y::WeightedEdge) = x.vertices == y.vertices #error("
 # for sum(), Java.totalWeight()
 Base.:(+)(x::WeightedEdge, y::WeightedEdge) = weight(x) + weight(y)
 Base.:(+)(x::Float64, y::WeightedEdge) = x + weight(y)
-
 
 function weight(e::WeightedEdge)
     e.weight

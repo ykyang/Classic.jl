@@ -1,11 +1,3 @@
-"""
-
-Results from Dijkstra algorithm.
-"""
-struct DijkstraResult
-    distances::Vector{Float64}
-    path_db::Dict{Int64,WeightedEdge}
-end
 
 function a_star(initial, goal_test, next_points, heuristic)
     node = nothing
@@ -187,14 +179,27 @@ end
 
 
 
+"""
+    DijkstraResult
 
+Results from Dijkstra algorithm
+"""
+struct DijkstraResult
+    """
+    Distance to each node
+    """
+    distances::Vector{Float64}
+    """
+    node index => edge that leads to the node in the shortest path
+    """
+    path_db::Dict{Int64,WeightedEdge}
+end
 
-
-function dijkstra(g::WeightedGraph{V,E}, start::V) where {V,E<:WeightedEdge}
+function dijkstra(g::WeightedGraph{V,E}, start::V)::DijkstraResult where {V,E<:WeightedEdge}
     start_ind = index_of(g, start)
     vertex_count = length(g.vertices)
 
-    # TODO: initialization to what?
+    # Initialization to `undef` is fine
     distances = Vector{Float64}(undef, vertex_count)
     distances[start_ind] = 0
     visited = zeros(Bool, vertex_count)
@@ -237,10 +242,15 @@ function dijkstra(g::WeightedGraph{V,E}, start::V) where {V,E<:WeightedEdge}
 end
 
 """
+    distances_to_distance_db(g::WeightedGraph{V,E}, distances::Vector{Float64})::Dict{V,Float64} where {V,E<:WeightedEdge}
 
-Convert the distance array to distance map.
+Convert the distance array to distance map.  Return mapping of
+```
+Node -> distance to Node from starting Node
+```
+Notice the starting `Node` was specified during the solution process and not here.
 """
-function array_to_db(g::WeightedGraph{V,E}, distances::Vector{Float64}) where {V,E<:WeightedEdge}
+function distances_to_distance_db(g::WeightedGraph{V,E}, distances::Vector{Float64})::Dict{V,Float64} where {V,E<:WeightedEdge}
     db = Dict{V,Float64}()
 
     for (i,dist) in enumerate(distances)
@@ -250,7 +260,13 @@ function array_to_db(g::WeightedGraph{V,E}, distances::Vector{Float64}) where {V
     return db
 end
 
-function path_db_to_path(g::WeightedGraph{V,E}, path_db::Dict{Int64,E}, start::Int64, finish::Int64) where {V,E<:WeightedEdge}
+
+"""
+    shortest_path(g::WeightedGraph{V,E}, path_db::Dict{Int64,E}, start::Int64, finish::Int64)::Vector{E} where {V,E<:WeightedEdge}
+
+Calculate the shortest path from `start` to `finish` using `path_db`.
+"""
+function shortest_path(path_db::Dict{Int64,E}, start::Int64, finish::Int64)::Vector{E} where {E<:WeightedEdge}
     path = Vector{E}()
     
     if isempty(path_db)
