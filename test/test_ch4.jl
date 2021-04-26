@@ -1,16 +1,15 @@
-#include("Classic.jl")
-
 using Test, DataStructures
-# if isdefined(@__MODULE__, :LanguageServer)
-#     include("../src/Classic.jl")
-#     using .Classic
-# else
-#     # invoked during test
-#     using Classic
-# end
-#import Classic
-#import Classic as cc
-#cc = Classic
+
+# see https://discourse.julialang.org/t/writing-tests-in-vs-code-workflow-autocomplete-and-tooltips/57488
+# see https://github.com/julia-vscode/julia-vscode/issues/800
+if isdefined(@__MODULE__, :LanguageServer)
+    include("../src/Classic.jl")
+    using .Classic
+else
+    # invoked during test
+    using Classic
+end
+
 
 function init!(g::Classic.Graph{V,E}) where {V,E<:Classic.Edge}
     #cc = Classic
