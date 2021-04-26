@@ -6,9 +6,7 @@ function Base.getindex(edge::Edge, i::Int64) #where {E<:Edge}
     return edge.vertices[i]
 end
 
-function reverse(e::E) where {E<:Edge}
-    return E(Base.reverse(e.vertices))
-end
+
 
 Base.string(e::Edge) = "$(e[1]) -> $(e[2])"
 Base.show(io::IO, x::Edge) = print(io, string(x))
@@ -23,6 +21,10 @@ struct SimpleEdge <: Edge
     function SimpleEdge(u,v)
         new((u,v))
     end
+end
+
+function reverse(e::SimpleEdge)
+    return SimpleEdge(Base.reverse(e.vertices))
 end
 
 struct WeightedEdge <: Edge
