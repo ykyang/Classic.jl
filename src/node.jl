@@ -77,8 +77,13 @@ Base.:(==)(x::DijkstraNode, y::DijkstraNode) = error("Unsupported operation") #x
 Base.isequal(x::DijkstraNode, y::DijkstraNode) = isequal(x.index, y.index) #x.index == y.index #error("Unsupported operation") 
 Base.hash(x::DijkstraNode, h::UInt64=UInt64(13)) = hash(x.index,h)
 
+"""
+    node_to_path(node::Node{P})::Vector{P} where {P}
 
-function node_to_path(node::Node{P}) where {P}
+Collect `point` from `Node` and its parents to show the path 
+from the `node` all the way back until parent is `nothing`.
+"""
+function node_to_path(node::Node{P})::Vector{P} where {P}
     path = Vector{P}()
     push!(path, node.point)
     while !isnothing(node.parent)
