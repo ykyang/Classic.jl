@@ -10,6 +10,7 @@ export node_to_path
 
 include("maze.jl")
 export Cell, Maze
+export new_maze
 
 include("edge.jl")
 export Edge, UnweightedGraph, SimpleEdge, WeightedEdge, WeightedGraph

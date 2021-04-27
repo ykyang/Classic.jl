@@ -2,4 +2,4 @@
 # by julia make.jl
 using Documenter, Classic
 
-makedocs(sitename="My Documentation")
+makedocs(sitename="Classic.jl")

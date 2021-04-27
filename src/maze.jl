@@ -33,7 +33,7 @@ mutable struct Maze
     )
     start::Tuple{Int64,Int64}
     goal::Tuple{Int64,Int64}
-    grid::Array{Cell,2}
+    grid::Matrix{Cell}
 end
 
 
@@ -68,6 +68,71 @@ end
 
 function new_maze()
     return new_maze(10, 10, (1,1), (10,10), 0.2)
+end
+
+function new_maze(smaze::String)
+    matrix::Vector{String} = split(smaze, "\n")
+
+    row_length = length(matrix[1])
+    for row in matrix
+        if row_length != length(row)
+            error("All rows must be the same length")
+        end
+    end
+
+    row_count = length(matrix)
+    col_count = row_length
+
+    grid = Matrix{Cell}(undef, row_count,col_count)
+    grid .= EMPTY::Cell
+    for (row_ind,row) in enumerate(matrix)
+        for col_ind in 1:length(row)
+            grid[row_ind,col_ind] = to_cell(row[col_ind])
+        end
+    end
+    
+    maze = Maze()
+    
+    maze.grid = grid
+    @show grid
+    maze.start = findfirst(x -> x == START, grid)
+    maze.goal = findfirst(x -> x == GOAL, grid)
+
+
+    return maze
+end
+
+"""
+Get predefined maze
+"""
+function new_maze(index::Integer)
+
+    if 1 == index
+        maze = new_maze(
+        """SOOOOXOOOOOOOOOOXXOO
+        OXOXOOXXOOOOOOXOOOOO
+        OOOOXOXXOOOXOOOOOOOO
+        OOOOOOOOOOOOOOOOOXOX
+        OOOOOOOOOOOOOOOOOOXX
+        XOXOOOXOOOOOOOXXOOOO
+        OXOXOOOXOOOXOXXOOOOO
+        XOOOOXOOOOXOOOOOOXXO
+        OOOXOOOOOOOOOOOOOOOO
+        XOOXOOOXOOOOOXOOOOOO
+        OXXOOOOXOOOOOXOOOOXO
+        OOOOOOXOOOXOOOOOOOOO
+        OOOXOOOXOOOOXOOOXOOO
+        OOOXXOOOOOOOOOXXOOOO
+        OXOOOOOOOXOOOOOXXOOO
+        XOOXOXOXOXOOOOOOOOOO
+        XOOOOOXOOOOOOOOOOXOO
+        OOOXXXOOOOOOOOOXOOOO
+        OOOOOOXOXOOXXOOOOOOO
+        OOOOOXOOOOOOOXOOXOOG"""
+        )
+    end
+
+    return maze
 end
 
 function random_fill!(grid, sparseness) 
@@ -133,17 +198,32 @@ Convert enumeration `Cell` to an one character string.
 function Base.string(x::Cell)
     # TODO: use Swicth.jl
     if x == EMPTY
-        return  "□" #"◻" #"▢" #"□"
+        return  "O" #"□" #"◻" #"▢" #"□"
     elseif x == BLOCKED
-        return "■" #"■" #"▮" #"■" #"◾" #"■" # "X" #"■" #"▮"
+        return "X" #"■" #"■" #"▮" #"■" #"◾" #"■" # "X" #"■" #"▮"
     elseif x == START
-        return "►" #"S"
+        return "S" #"►" #"S"
     elseif x == GOAL
-        return "◎" #"G"
+        return "G" #"◎" #"G"
     elseif x == PATH
-        return "●" #"*" #"◘" #"*"
+        return "+" #"●" #"*" #"◘" #"*"
     end
 
     return "?"
 end
 
+function to_cell(x::Char)
+    if 'O' == x
+        return EMPTY
+    elseif 'X' == x
+        return BLOCKED
+    elseif 'S' == x
+        return START
+    elseif 'G' == x
+        return GOAL
+    elseif '+' == x
+        return PATH
+    end
+
+    return EMPTY
+end
