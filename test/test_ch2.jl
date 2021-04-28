@@ -1,8 +1,15 @@
-#include("Classic.jl")
-
 using Test
 
-import Classic
+# see https://discourse.julialang.org/t/writing-tests-in-vs-code-workflow-autocomplete-and-tooltips/57488
+# see https://github.com/julia-vscode/julia-vscode/issues/800
+if isdefined(@__MODULE__, :LanguageServer)
+    include("../src/Classic.jl")
+    using .Classic
+else
+    # invoked during test
+    using Classic
+end
+
 cc = Classic
 
 
@@ -27,6 +34,8 @@ end
 
 function run_bfs()
     maze = cc.new_maze(10, 10, (1,1), (10,10), 0.2)
+    #maze = cc.new_maze(1)
+    #maze = cc.new_maze(2)
 
     # create functions for bfs()
     is_goal(pt)     = cc.is_goal(maze.goal, pt)
@@ -81,6 +90,24 @@ function run_dfs()
     #@show node
 end
 
+function test_bfs()
+    for grid_ind = 1:2
+        maze = new_maze(new_grid(grid_ind))
+
+        # create functions for bfs()
+        is_goal(pt)     = cc.is_goal(maze.goal, pt)
+        next_points(pt) = cc.next_points(maze.grid, pt)
+
+        node = bfs(maze.start, is_goal, next_points)
+        @test !isnothing(node)
+        
+        mark_path!(maze.grid, node, start=maze.start, goal=maze.goal)
+        #display(maze.grid)
+        sol = new_maze(solution_grid(grid_ind))
+        @test sol.grid == maze.grid
+    end
+end
+
 function test_manhattan_distance()
     goal = (12,13)
     pt = (1,1)
@@ -100,7 +127,15 @@ end
 #run_astar()
 #run_cell()
 #run_dfs()
-run_bfs()
+#run_bfs()
+
+@testset "Breadth-first search" begin
+    test_bfs()
+end
+
+@testset "A-star search" begin
+    test_manhattan_distance()
+end
 
 nothing
 

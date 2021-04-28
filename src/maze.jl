@@ -102,36 +102,131 @@ function new_maze(smaze::String)
     return maze
 end
 
+function solution_grid(index::Integer)
+    if 1 == index
+        str = """SOOOOXOOOOOOOOOOXXOO
+                 +XOXOOXXOOOOOOXOOOOO
+                 +OOOXOXXOOOXOOOOOOOO
+                 +OOOOOOOOOOOOOOOOXOX
+                 ++++OOOOOOOOOOOOOOXX
+                 XOX++OXOOOOOOOXXOOOO
+                 OXOX+OOXOOOXOXXOOOOO
+                 XOOO+XOOOOXOOOOOOXXO
+                 OOOX+OOOOOOOOOOOOOOO
+                 XOOX+OOXOOOOOXOOOOOO
+                 OXXO+OOXOOOOOXOOOOXO
+                 OOOO+OXOOOXOOOOOOOOO
+                 OOOX++OXOOOOXOOOXOOO
+                 OOOXX+OOOOOOOOXXOOOO
+                 OXOOO++++XOOOOOXXOOO
+                 XOOXOXOX+XOOOOOOOOOO
+                 XOOOOOXO+OOOOOOOOXOO
+                 OOOXXXOO++++++OXOOOO
+                 OOOOOOXOXOOXX+++++OO
+                 OOOOOXOOOOOOOXOOX++G"""
+    elseif 2 == index
+        str = """SOOOOOOOOOOOOXXOOOXO
+                 +OOOOXXXOOOXXOOOOOOX
+                 ++OXOOOOOOOOOOOOOOOO
+                 X+OOXOOOOXOOOOXOOOOO
+                 X+OOOOOOOOOOOOOOXXXX
+                 O++OOXOXOOOOXXOOOOOO
+                 OX+OOOOOOOOOXOOXOXOO
+                 XO+XXOXOOXOOOOOOXOOO
+                 OO+OXOOOOOXOOOOOOOXX
+                 OX+OOXOOOXOXOOOOXOOO
+                 XO+OOOOXOOOOOOOXOOOO
+                 OO++++++++++++++XOXO
+                 OOOOOOOOOOOOOXX+OOOO
+                 OOOOOOOXOOOOOXO+OXOO
+                 OOOOOOOOOOXXXXO+OOOO
+                 OXXXOOOOOOOXOXX+XOOX
+                 OOOOOOOOOOXOOXO+OOOO
+                 OOOOXOOOXOOXOOX++OOO
+                 OXOOOOOOOOOOOOOX++++
+                 OOOOOOOXOOOOXOOOOXXG"""
+    end
+
+    rows::Vector{String} = split(str, "\n")
+    row_count = length(rows)
+    col_count = length(rows[1]) # use first row to determine
+    grid = Matrix{Char}(undef, row_count,col_count)
+
+    for (row_ind,row) in enumerate(rows)
+        grid[row_ind, 1:end] = collect(row)
+    end
+
+    return grid
+end
+
+function new_grid(index::Integer)::Matrix{Char}
+
+    if 1 == index
+        str =  """SOOOOXOOOOOOOOOOXXOO
+                  OXOXOOXXOOOOOOXOOOOO
+                  OOOOXOXXOOOXOOOOOOOO
+                  OOOOOOOOOOOOOOOOOXOX
+                  OOOOOOOOOOOOOOOOOOXX
+                  XOXOOOXOOOOOOOXXOOOO
+                  OXOXOOOXOOOXOXXOOOOO
+                  XOOOOXOOOOXOOOOOOXXO
+                  OOOXOOOOOOOOOOOOOOOO
+                  XOOXOOOXOOOOOXOOOOOO
+                  OXXOOOOXOOOOOXOOOOXO
+                  OOOOOOXOOOXOOOOOOOOO
+                  OOOXOOOXOOOOXOOOXOOO
+                  OOOXXOOOOOOOOOXXOOOO
+                  OXOOOOOOOXOOOOOXXOOO
+                  XOOXOXOXOXOOOOOOOOOO
+                  XOOOOOXOOOOOOOOOOXOO
+                  OOOXXXOOOOOOOOOXOOOO
+                  OOOOOOXOXOOXXOOOOOOO
+                  OOOOOXOOOOOOOXOOXOOG"""
+    elseif 2 == index
+        str =  """SOOOOOOOOOOOOXXOOOXO
+                  OOOOOXXXOOOXXOOOOOOX
+                  OOOXOOOOOOOOOOOOOOOO
+                  XOOOXOOOOXOOOOXOOOOO
+                  XOOOOOOOOOOOOOOOXXXX
+                  OOOOOXOXOOOOXXOOOOOO
+                  OXOOOOOOOOOOXOOXOXOO
+                  XOOXXOXOOXOOOOOOXOOO
+                  OOOOXOOOOOXOOOOOOOXX
+                  OXOOOXOOOXOXOOOOXOOO
+                  XOOOOOOXOOOOOOOXOOOO
+                  OOOOOOOOOOOOOOOOXOXO
+                  OOOOOOOOOOOOOXXOOOOO
+                  OOOOOOOXOOOOOXOOOXOO
+                  OOOOOOOOOOXXXXOOOOOO
+                  OXXXOOOOOOOXOXXOXOOX
+                  OOOOOOOOOOXOOXOOOOOO
+                  OOOOXOOOXOOXOOXOOOOO
+                  OXOOOOOOOOOOOOOXOOOO
+                  OOOOOOOXOOOOXOOOOXXG"""    
+    end
+
+    # Convert to Matrix{Char}
+    rows::Vector{String} = split(str, "\n")
+    row_count = length(rows)
+    col_count = length(rows[1]) # use first row to determine
+    grid = Matrix{Char}(undef, row_count,col_count)
+
+    for (row_ind,row) in enumerate(rows)
+        grid[row_ind, 1:end] = collect(row)
+    end
+
+    return grid
+end
+
 """
 Get predefined maze
 """
-function new_maze(index::Integer)
-
-    if 1 == index
-        maze = new_maze(
-        """SOOOOXOOOOOOOOOOXXOO
-        OXOXOOXXOOOOOOXOOOOO
-        OOOOXOXXOOOXOOOOOOOO
-        OOOOOOOOOOOOOOOOOXOX
-        OOOOOOOOOOOOOOOOOOXX
-        XOXOOOXOOOOOOOXXOOOO
-        OXOXOOOXOOOXOXXOOOOO
-        XOOOOXOOOOXOOOOOOXXO
-        OOOXOOOOOOOOOOOOOOOO
-        XOOXOOOXOOOOOXOOOOOO
-        OXXOOOOXOOOOOXOOOOXO
-        OOOOOOXOOOXOOOOOOOOO
-        OOOXOOOXOOOOXOOOXOOO
-        OOOXXOOOOOOOOOXXOOOO
-        OXOOOOOOOXOOOOOXXOOO
-        XOOXOXOXOXOOOOOOOOOO
-        XOOOOOXOOOOOOOOOOXOO
-        OOOXXXOOOOOOOOOXOOOO
-        OOOOOOXOXOOXXOOOOOOO
-        OOOOOXOOOOOOOXOOXOOG"""
-        )
-    end
-
+function new_maze(grid::Matrix{Char})
+    maze = Maze()
+    maze.grid = Base.convert(Matrix{Cell}, grid)
+    maze.start = findfirst(x -> x == START, maze.grid)
+    maze.goal = findfirst(x -> x == GOAL, maze.grid)
+    
     return maze
 end
 
@@ -212,7 +307,30 @@ function Base.string(x::Cell)
     return "?"
 end
 
+"""
+Deprecated, use Base.convert
+"""
 function to_cell(x::Char)
+    if 'O' == x
+        return EMPTY
+    elseif 'X' == x
+        return BLOCKED
+    elseif 'S' == x
+        return START
+    elseif 'G' == x
+        return GOAL
+    elseif '+' == x
+        return PATH
+    end
+
+    return EMPTY
+end
+
+"""
+
+Enable `convert(Matrix{Cell}, Matrix{Char})`.
+"""
+function Base.convert(::Type{Cell}, x::Char)
     if 'O' == x
         return EMPTY
     elseif 'X' == x
