@@ -186,7 +186,7 @@ Results from Dijkstra algorithm
 """
 struct DijkstraResult
     """
-    Distance to each node
+    Distance to each node from the starting node
     """
     distances::Vector{Float64}
     """
