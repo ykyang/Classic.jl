@@ -343,5 +343,26 @@ function Base.convert(::Type{Cell}, x::Char)
         return PATH
     end
 
-    return EMPTY
+    #return EMPTY
+    error("Cannot convert Char \"$x\" to Cell")
+end
+
+"""
+
+Could be used for plotting
+"""
+function Base.convert(::Type{Int64}, x::Cell)
+    if EMPTY == x
+        return 0
+    elseif BLOCKED == x
+        return 1
+    elseif START == x
+        return 2
+    elseif GOAL == x
+        return 3
+    elseif PATH == x
+        return 4
+    end
+
+    error("Cannot convert Cell \"$x\" to Int64")
 end

@@ -108,6 +108,46 @@ function test_bfs()
     end
 end
 
+function test_convert()
+    # Char -> Cell
+    x = 'O'
+    @test Classic.EMPTY == Base.convert(Cell, x) # EMPTY not exported so must use Classic.EMPTY
+    x = 'X'
+    @test Classic.BLOCKED == Base.convert(Cell, x)
+    x = 'S'
+    @test Classic.START == Base.convert(Cell, x)
+    x = 'G'
+    @test Classic.GOAL == Base.convert(Cell, x)
+    x = '+'
+    @test Classic.PATH == Base.convert(Cell, x)
+
+    x = fill('X', (30,30))
+    y = fill(Classic.BLOCKED, (30,30))
+    @test y == convert(Matrix{Cell}, x)
+
+    x = fill('X', (30,30))
+    x[16:end,16:end] .= '+'
+    y = fill(Classic.BLOCKED, (30,30))
+    y[16:end,16:end] .= Classic.PATH
+    @test y == convert(Matrix{Cell}, x)
+
+    # Cell -> Int
+    x = Classic.EMPTY
+    @test 0 == Base.convert(Int64, x)
+    x = Classic.BLOCKED
+    @test 1 == Base.convert(Int64, x)
+    x = Classic.START
+    @test 2 == Base.convert(Int64, x)
+    x = Classic.GOAL
+    @test 3 == Base.convert(Int64, x)
+    x = Classic.PATH
+    @test 4 == Base.convert(Int64, x)
+
+    x = fill(Classic.BLOCKED, (30,30))
+    y = fill(1, (30,30))
+    @test y == convert(Matrix{Int64}, x)
+end
+
 function test_manhattan_distance()
     goal = (12,13)
     pt = (1,1)
@@ -128,6 +168,9 @@ end
 #run_cell()
 #run_dfs()
 #run_bfs()
+@testset "Maze" begin
+    test_convert()
+end
 
 @testset "Breadth-first search" begin
     test_bfs()
