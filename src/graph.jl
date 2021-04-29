@@ -38,11 +38,33 @@ function Base.append!(g::Graph{V,E}, vertices) where {V,E<:Edge} # is <:Edge nec
     end
 end
 
+"""
+    edges_of(g::Graph{V,E}, v::V) where {V,E<:Edge}
+
+Get the edges of a node (vertex).
+
+...
+# Arguments
+- `g`: Graph
+- `v`: Node (vertex)
+...
+"""
 function edges_of(g::Graph{V,E}, v::V) where {V,E<:Edge}
     index = index_of(g, v)
     return edges_of(g, index)
 end
 
+"""
+    edges_of(g::Graph{V,E}, index::Int64)  where {V,E<:Edge}
+
+Get the edges of a node (vertex).
+
+...
+# Arguments
+- `g`: Graph
+- `index`: Index of the node (vertex)
+...
+"""
 function edges_of(g::Graph{V,E}, index::Int64)  where {V,E<:Edge}
     return g.edges_lists[index]
 end
