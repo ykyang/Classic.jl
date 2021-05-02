@@ -1,4 +1,6 @@
-# run
+# julia --project=@. test/runtests.jl
+#
+# julia> include("test/runtests.jl")
 using Test
 
 # see https://discourse.julialang.org/t/writing-tests-in-vs-code-workflow-autocomplete-and-tooltips/57488

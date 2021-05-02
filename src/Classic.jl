@@ -17,6 +17,9 @@ export Edge, UnweightedGraph, SimpleEdge, WeightedEdge, WeightedGraph
 #export reverse, weight
 export weight
 
+include("gene.jl")
+export Codon, Gene, Nucleotide
+
 include("graph.jl")
 export Graph
 export add!, index_of, is_goal, next_points
