@@ -53,6 +53,10 @@ function Codon(x::String)
     Codon(v)
 end
 Base.:(==)(x::Codon,y::Codon) = x.nucleotide == y.nucleotide
+Base.:(<)(x::Codon,y::Codon) = x.nucleotide < y.nucleotide
+Base.isless(x::Codon,y::Codon) = isless(x.nucleotide,y.nucleotide)
+Base.hash(x::Codon, h::UInt64=UInt64(13)) = hash(x.nucleotide,h)
+
 
 struct Gene
     codons::Vector{Codon}
@@ -68,3 +72,32 @@ function Gene(x::String)
     return Gene(codons)
 end
 
+function linear_contains(gene::Gene, key::Codon)
+    for codon in gene.codons
+        if key == codon
+            return true
+        end
+    end
+
+    return false
+end
+
+function binary_contains(gene::Gene, key::Codon)
+    codons = sort(gene.codons)
+    low = 1
+    high = length(codons)
+
+    while low <= high
+        middle = div(low+high, 2) #(low+high) ÷ 2 # integer divide
+        
+        if codons[middle] < key
+            low = middle + 1
+        elseif codons[middle] > key
+            high = middle -1
+        else # codons[middle] == key
+            return true
+        end
+    end
+
+    return false
+end

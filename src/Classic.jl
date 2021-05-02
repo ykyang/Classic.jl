@@ -19,6 +19,7 @@ export weight
 
 include("gene.jl")
 export Codon, Gene, Nucleotide
+export binary_contains, linear_contains
 
 include("graph.jl")
 export Graph
