@@ -25,6 +25,10 @@ include("graph.jl")
 export Graph
 export add!, index_of, is_goal, next_points
 
+include("kmean.jl")
+export Cluster, DataPoint, SimpleDataPoint
+export distance
+
 include("algorithm.jl")
 export DijkstraResult
 export distances_to_distance_db, a_star, bfs, dfs, dijkstra, mst, shortest_path

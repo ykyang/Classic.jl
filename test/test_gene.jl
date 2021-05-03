@@ -89,8 +89,8 @@ function test_Gene()
 
     # linear search
     gene_str = "ACGTGGCTCTCTAACGTACGTACGTACGGGGTTTATATATACCCTAGGACTCCCTTT"
-    @test linear_contains(Gene(gene_str), Codon("ACG"))
-    @test !linear_contains(Gene(gene_str), Codon("GAT"))
+    @test true == linear_contains(Gene(gene_str), Codon("ACG"))
+    @test false == linear_contains(Gene(gene_str), Codon("GAT"))
 
     # binary search
     gene_str = "ACGTGGCTCTCTAACGTACGTACGTACGGGGTTTATATATACCCTAGGACTCCCTTT"
