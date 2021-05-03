@@ -25,7 +25,7 @@ function distance(x::P, y::P) where {P<:DataPoint}
 end
 
 struct Cluster{P<:DataPoint}
-    point::Vector{P}
+    pointvec::Vector{P}
     centroid::P
 end
 
@@ -85,4 +85,9 @@ function normalize_zscore(pointvec::Vector{P}) where {P<:DataPoint}
     for i in 1:length(pointvec)
         pointvec[i].derived = zscored[i]
     end
+end
+
+function run!(kmeans::KMeans, maxIt::Int64)
+    
+    error("Not supported operation")
 end

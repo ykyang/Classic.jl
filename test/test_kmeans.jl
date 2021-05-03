@@ -55,6 +55,8 @@ function test_kmeans()
     push!(pointvec, SimpleDataPoint(Float64.([2,2,5])))
     push!(pointvec, SimpleDataPoint(Float64.([3,1.5,2.5])))
     
+    kmeans = KMeans(2, pointvec)
+    run(kmeans, 100)
 end
 
 @testset "DataPoint" begin
