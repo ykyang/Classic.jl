@@ -50,7 +50,7 @@ function test_slice_derived()
     @test Float64.([4,5,6]) == derivedvec
 end
 
-function test_kmeans()
+function test_kmeans(io::IO)
     pointvec = Vector{SimpleDataPoint}()
     push!(pointvec, SimpleDataPoint(Float64.([2,1,1])))
     push!(pointvec, SimpleDataPoint(Float64.([2,2,5])))
@@ -58,7 +58,23 @@ function test_kmeans()
     
     kmeans = KMeans(2, pointvec)
     run!(kmeans, 100)
+    for (ind,cluster) in enumerate(kmeans.clustervec)
+        println(io, "Cluster $(ind): $(cluster.pointvec)")
+    end
+    for cluster in kmeans.clustervec
+        if 1 == length(cluster.pointvec) 
+            point = cluster.pointvec[1]
+            @test point.original == Float64.([2,2,5])
+        elseif 2 == length(cluster.pointvec)
+            for point in cluster.pointvec
+                @test point.original == Float64.([2,1,1]) || point.original == Float64.([3,1.5,2.5])
+            end
+        end
+    end
 end
+
+io = stdout
+io = devnull
 
 @testset "DataPoint" begin
     test_SimpleDataPoint()
@@ -66,7 +82,7 @@ end
     test_KMeans()
 
     test_slice_derived()
-    test_kmeans()
+    test_kmeans(io)
 end
 
 nothing

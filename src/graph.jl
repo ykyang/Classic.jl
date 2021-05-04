@@ -43,11 +43,11 @@ end
 
 Get the edges of a node (vertex).
 
-...
+
 # Arguments
 - `g`: Graph
 - `v`: Node (vertex)
-...
+
 """
 function edges_of(g::Graph{V,E}, v::V) where {V,E<:Edge}
     index = index_of(g, v)
@@ -59,11 +59,11 @@ end
 
 Get the edges of a node (vertex).
 
-...
+
 # Arguments
 - `g`: Graph
 - `index`: Index of the node (vertex)
-...
+
 """
 function edges_of(g::Graph{V,E}, index::Int64)  where {V,E<:Edge}
     return g.edges_lists[index]

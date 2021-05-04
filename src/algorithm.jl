@@ -45,12 +45,12 @@ Solve a maze using breadth-first search algorithm.  Returns the `Node` at the
 goal or nothing is no solution found.  Use the parent of `Node` to trace back 
 to the start.
 
-...
+
 # Arguments
 - `initial`: Starting point in the maze
 - `goal_test`: Function`(Tuple{Int64,Int64})` to test if the goal has reached
 - `next_points`: Function`(Tuple{Int64,Int64}) -> Vector{Tuple{Int64,Int64}}` to get next points to move to
-...
+
 """
 function bfs(initial::P, goal_test, next_points) where {P} # point type
     # P = Tuple{Int64,Int64} # point type
@@ -91,12 +91,11 @@ end
 
 Depth-first search
 
-...
+
 # Arguments
 - `initial`: Starting point in the maze
 - `goal_test`: Function to test if goal has reached
 - `successors`: Function to get a list of next locations to try
-...
 """
 function dfs(
     initial::Tuple{Int64,Int64}, # MazeLocation, 
