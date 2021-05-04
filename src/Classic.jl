@@ -1,6 +1,6 @@
 module Classic
 
-using DataStructures, StatsBase
+using DataStructures, Statistics, StatsBase
 
 # Order matters
 
@@ -27,7 +27,7 @@ export add!, index_of, is_goal, next_points
 
 include("kmean.jl")
 export Cluster, DataPoint, KMeans, SimpleDataPoint
-export distance, slice_derived
+export distance, run!, slice_derived
 
 include("algorithm.jl")
 export DijkstraResult
