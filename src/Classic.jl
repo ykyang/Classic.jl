@@ -10,7 +10,7 @@ export node_to_path
 
 include("maze.jl")
 export Cell, Maze
-export mark_path!, new_grid, new_maze, solution_grid
+export mark_path!, new_grid, new_maze, set_original!, solution_grid
 
 include("edge.jl")
 export Edge, UnweightedGraph, SimpleEdge, WeightedEdge, WeightedGraph
@@ -27,7 +27,7 @@ export add!, index_of, is_goal, next_points
 
 include("kmean.jl")
 export Cluster, DataPoint, KMeans, SimpleDataPoint
-export distance, run!, slice_derived
+export distance, run!, slice_derived, slice_original
 
 include("algorithm.jl")
 export DijkstraResult

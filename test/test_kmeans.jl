@@ -12,16 +12,48 @@ end
 
 function test_SimpleDataPoint()
     # Constructor
-    p = SimpleDataPoint(Float64.([1,2]))
-    @test 2 == p.dimension
-    @test Float64.([1,2]) == p.original
-    @test Float64.([1,2]) == p.derived
+    data = Float64.([1,2])
+    p = SimpleDataPoint(data)
+    @test length(data) == p.dimension
+    @test data == p.original
+    @test data == p.derived
 
+    # (==) checks `derived` for equality
+    x = SimpleDataPoint(Float64.([1,2]))
+    y = SimpleDataPoint(Float64.([1,2]))
+    @test x == y
 
+    x = SimpleDataPoint(Float64.([1,2]))
+    y = SimpleDataPoint(Float64.([1,2]))
+    x.original[1] = 13
+    @test x == y
+    
+    x = SimpleDataPoint(Float64.([1,2]))
+    y = SimpleDataPoint(Float64.([1,2]))
+    x.derived[1] = 13
+    @test x != y
+
+end
+
+function test_set_original!()
+    data = Float64.([1,2])
+    p = SimpleDataPoint(data)
+    @test data == p.original
+    @test data == p.derived
+
+    data = Float64.([7,13])
+    set_original!(p, data)
+    @test data == p.original
+    @test data == p.derived
+end
+
+function test_distance()
     # distance
     p1 = SimpleDataPoint(Float64.([1,2]))
     p2 = SimpleDataPoint(Float64.([2,1]))
     @test sqrt(2) ≈ distance(p1,p2)
+
+    # Error: Points with different dimension
     p3 = SimpleDataPoint(Float64.([2]))
     @test_throws DomainError distance(p1,p3)
 end
@@ -34,6 +66,9 @@ function test_KMeans()
     pointvec = Vector{SimpleDataPoint}()
     push!(pointvec, SimpleDataPoint([1.0,4.0]))
     @test KMeans(13, pointvec) isa Any
+
+    # Error
+    @test_throws DomainError KMeans(0, pointvec)
 end
 
 function test_slice_derived()
@@ -42,12 +77,31 @@ function test_slice_derived()
     push!(pointvec, SimpleDataPoint([1.0,4.0]))
     push!(pointvec, SimpleDataPoint([2.0,5.0]))
     push!(pointvec, SimpleDataPoint([3.0,6.0]))
+    pointvec[1].derived .= [7.0, 10.0]
+    pointvec[2].derived .= [8.0, 11.0]
+    pointvec[3].derived .= [9.0, 12.0]
+    # Test
+    data = slice_derived(pointvec, 1)
+    @test Float64.([7,8,9]) == data
+    data = slice_derived(pointvec, 2)
+    @test Float64.([10,11,12]) == data
+end
+
+function test_slice_original()
+    # Setup
+    pointvec = Vector{SimpleDataPoint}()
+    push!(pointvec, SimpleDataPoint([1.0,4.0]))
+    push!(pointvec, SimpleDataPoint([2.0,5.0]))
+    push!(pointvec, SimpleDataPoint([3.0,6.0]))
+    pointvec[1].derived .= [7.0, 10.0]
+    pointvec[2].derived .= [8.0, 11.0]
+    pointvec[3].derived .= [9.0, 12.0]
 
     # Test
-    derivedvec = slice_derived(pointvec, 1)
-    @test Float64.([1,2,3]) == derivedvec
-    derivedvec = slice_derived(pointvec, 2)
-    @test Float64.([4,5,6]) == derivedvec
+    data = slice_original(pointvec, 1)
+    @test Float64.([1,2,3]) == data
+    data = slice_original(pointvec, 2)
+    @test Float64.([4,5,6]) == data
 end
 
 function test_kmeans(io::IO)
@@ -81,7 +135,10 @@ io = devnull
     test_Cluster()
     test_KMeans()
 
+    test_distance()
+    test_set_original!()
     test_slice_derived()
+    test_slice_original()
     test_kmeans(io)
 end
 

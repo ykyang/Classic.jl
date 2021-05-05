@@ -26,10 +26,21 @@ struct SimpleDataPoint <: DataPoint
     end
 end
 
+"""
+    Base.:(==)(x::DataPoint, y::DataPoint)
+
+Check `derived` vector for equality
+"""
 function Base.:(==)(x::DataPoint, y::DataPoint)
     return x.derived == y.derived
 end
 
+"""
+    set_original!(x::P, initial) where {P<:DataPoint}
+
+Convenient function to set `original` and `derived` to the same
+values.
+"""
 function set_original!(x::P, initial) where {P<:DataPoint}
     if x.dimension != length(initial)
         throws(DomainError("Dimension mismatching"))
@@ -63,25 +74,40 @@ struct Cluster{P<:DataPoint}
     pointvec::Vector{P}
     centroid::P
 end
+
 """
     KMeans{P<:DataPoint}
 
-Constructor
+K-Mean data structure with points and clusters
+
+# Fields
+- `pointvec`: Vector of DataPoint
+- `clustervec`: Vector of Cluster
+
 """
 struct KMeans{P<:DataPoint}
-    "Points"
     pointvec::Vector{P}
     clustervec::Vector{Cluster{P}}
 end
 
+"""
+    KMeans(k::Int64, pointvec::Vector{P}) where {P<:DataPoint}
+
+Creates a `KMeans` with `k` clusters and random centroids using the
+input points.
+"""
 function KMeans(k::Int64, pointvec::Vector{P}) where {P<:DataPoint}
-    # TODO: Check k
+    if k < 1
+        throw(DomainError("k must be >= 1"))
+    end
 
     clustervec = Vector{Cluster{P}}()
     me = KMeans(pointvec, clustervec)
     
     # initialize with random clusters
-    normalize_zscore!(me.pointvec)
+    #normalize_zscore!(me.pointvec)
+    zscore_derived!(me.pointvec)
+
     dimension_count = pointvec[1].dimension
     for i in 1:k
         rand_point = random_point(pointvec)
@@ -110,12 +136,90 @@ function slice_derived(pointvec::Vector{P}, dimension) where {P<:DataPoint}
 end
 
 """
+    slice_original(pointvec::Vector{P}, dimension) where {P<:DataPoint}
+
+Get `original[dimension]` from each point and put into a vector.
+
+Similar to `dimensionSlice` in Java.
+"""
+function slice_original(pointvec::Vector{P}, dimension) where {P<:DataPoint}
+    originalvec = Vector{Float64}(undef, length(pointvec))
+    
+    for (i,p) in enumerate(pointvec)
+        originalvec[i] = p.original[dimension]
+    end
+
+    return originalvec
+end
+
+"""
     normalize_zscore!(pointvec::Vector{P}) where {P<:DataPoint}
+
+Assign zscore of `derived` to `derived`
+
+Relys on `P` has just been initialized so `derived` equals to `original`.
+Do not think this is a good approch.  See `zscore_derived()`.
 
 Create `derived` data that is normalized using zscore.
 The is the `zScoreNormalize` in Java.
 """
 function normalize_zscore!(pointvec::Vector{P}) where {P<:DataPoint}
+    zscored = Vector{Vector{Float64}}()
+    for i in 1:length(pointvec)
+        push!(zscored, Vector{Float64}())
+    end
+
+    dimension = pointvec[1].dimension
+    for dim_ind = 1:dimension
+        dimension_slice = slice_derived(pointvec, dimension)
+        mu = mean(dimension_slice)
+        sigma = std(dimension_slice, corrected=false)
+        zscores = zscore(dimension_slice, mu, sigma)
+        for ind in 1:length(zscores)
+            push!(zscored[ind], zscores[ind])
+        end
+        
+    end
+    
+    for i in 1:length(pointvec)
+        pointvec[i].derived .= zscored[i]
+    end
+end
+
+"""
+    zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
+
+Assign zscore values of `original` to `derived`
+"""
+function zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
+    zscored = Vector{Vector{Float64}}()
+    for i in 1:length(pointvec)
+        push!(zscored, Vector{Float64}())
+    end
+
+    dimension = pointvec[1].dimension
+    for dim_ind = 1:dimension
+        dimension_slice = slice_original(pointvec, dimension)
+        mu = mean(dimension_slice)
+        sigma = std(dimension_slice, corrected=false)
+        zscores = zscore(dimension_slice, mu, sigma)
+        for ind in 1:length(zscores)
+            push!(zscored[ind], zscores[ind])
+        end
+        
+    end
+    
+    for i in 1:length(pointvec)
+        pointvec[i].derived .= zscored[i]
+    end
+end
+
+
+"""
+
+This resembles the `zScoreNormalize` in Java but not exactly the same.
+"""
+function zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
     zscored = Vector{Vector{Float64}}()
     for i in 1:length(pointvec)
         push!(zscored, Vector{Float64}())
