@@ -190,32 +190,6 @@ end
     zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
 
 Assign zscore values of `original` to `derived`
-"""
-function zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
-    zscored = Vector{Vector{Float64}}()
-    for i in 1:length(pointvec)
-        push!(zscored, Vector{Float64}())
-    end
-
-    dimension = pointvec[1].dimension
-    for dim_ind = 1:dimension
-        dimension_slice = slice_original(pointvec, dimension)
-        mu = mean(dimension_slice)
-        sigma = std(dimension_slice, corrected=false)
-        zscores = zscore(dimension_slice, mu, sigma)
-        for ind in 1:length(zscores)
-            push!(zscored[ind], zscores[ind])
-        end
-        
-    end
-    
-    for i in 1:length(pointvec)
-        pointvec[i].derived .= zscored[i]
-    end
-end
-
-
-"""
 
 This resembles the `zScoreNormalize` in Java but not exactly the same.
 """
@@ -227,7 +201,7 @@ function zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
 
     dimension = pointvec[1].dimension
     for dim_ind = 1:dimension
-        dimension_slice = slice_derived(pointvec, dimension)
+        dimension_slice = slice_original(pointvec, dimension)
         mu = mean(dimension_slice)
         sigma = std(dimension_slice, corrected=false)
         zscores = zscore(dimension_slice, mu, sigma)
@@ -317,9 +291,6 @@ function generate_centroids!(kmeans::KMeans)
         dimension_count = cluster.pointvec[1].dimension
         for dimension in 1:dimension_count
 
-            # TODO: use slice_derived
-            #dimension_mean = 
-            #derived = [p.derived[dimension] for p in cluster.pointvec]
             derived = slice_derived(cluster.pointvec, dimension)
             derived_mean = mean(derived)
             push!(means, derived_mean)
