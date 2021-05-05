@@ -41,6 +41,15 @@ struct Governor <: DataPoint
         derived = [longitude, age]
         new(dimension, original, derived, longitude, age, state)
     end
+
+    function Governor(original::Vector{Float64})
+        if 2 != length(original)
+            throw(DomainError("Length of vector must be 2"))
+        end
+        dimension = 2
+        derived = copy(original)
+        new(2, original, derived, 0.0, 0.0, "")
+    end
 end
 
 """

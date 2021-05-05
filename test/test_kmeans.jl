@@ -135,6 +135,12 @@ function test_Governor()
     @test -89.79113       == p.longitude
     @test 72              == p.age
     @test "Alabama"       == p.state
+
+    data = Float64.([7, 13])
+    p = Governor(data)
+    @test 2    == p.dimension
+    @test data == p.original
+    @test data == p.derived
 end
 
 function test_kmeans_governor(io::IO)
@@ -196,7 +202,10 @@ function test_kmeans_governor(io::IO)
     kmeans = KMeans(2, pointvec)
     run!(kmeans, 100)
     for (ind,cluster) in enumerate(kmeans.clustervec)
-        println(io, "Cluster $(ind): $(cluster.pointvec)")
+        println(io, "Cluster $(ind):")
+        for point in cluster.pointvec
+            println(io, "$(point.state)\t\t$(point.age)\t\t$(point.longitude)")
+        end
     end
 end
 
