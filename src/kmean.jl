@@ -26,6 +26,23 @@ struct SimpleDataPoint <: DataPoint
     end
 end
 
+struct Governor <: DataPoint
+    dimension::Int64
+    original::Vector{Float64}
+    derived::Vector{Float64}
+
+    longitude::Float64
+    age::Float64
+    state::String
+
+    function Governor(longitude, age, state)
+        dimension = 2
+        original = [longitude, age]
+        derived = [longitude, age]
+        new(dimension, original, derived, longitude, age, state)
+    end
+end
+
 """
     Base.:(==)(x::DataPoint, y::DataPoint)
 

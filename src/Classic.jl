@@ -26,7 +26,7 @@ export Graph
 export add!, index_of, is_goal, next_points
 
 include("kmean.jl")
-export Cluster, DataPoint, KMeans, SimpleDataPoint
+export Cluster, DataPoint, Governor, KMeans, SimpleDataPoint
 export distance, run!, slice_derived, slice_original
 
 include("algorithm.jl")
