@@ -227,8 +227,34 @@ function test_Album()
     @test data == p.derived
 end
 
+function test_kmeans_album(io::IO)
+    pointvec = Vector{Album}()
+    begin
+        push!(pointvec, Album("Got to Be There", 1972, 35.45, 10.0))
+        push!(pointvec, Album("Ben", 1972, 31.31, 10.0))
+        push!(pointvec, Album("Music & Me", 1973, 32.09, 10.0))
+        push!(pointvec, Album("Forever, Michael", 1975, 33.36, 10.0))
+        push!(pointvec, Album("Off the Wall", 1979, 42.28, 10.0))
+        push!(pointvec, Album("Thriller", 1982, 42.19, 9.0))
+        push!(pointvec, Album("Bad", 1987, 48.16, 10.0))
+        push!(pointvec, Album("Dangerous", 1991, 77.03, 14.0))
+        push!(pointvec, Album("HIStory: Past, Present and Future, Book I", 1995, 148.58, 30.0))
+        push!(pointvec, Album("Invincible", 2001, 77.05, 16.0))
+    end
+
+    kmeans = KMeans(2, pointvec)
+    run!(kmeans, 100)
+    for (ind,cluster) in enumerate(kmeans.clustervec)
+        println(io, "Cluster $(ind):")
+        for point in cluster.pointvec
+            println(io, "$(point.name)\t\t$(point.length)\t\t$(point.tracks)")
+        end
+    end
+
+end
+
 io = stdout
-io = devnull
+#io = devnull
 
 @testset "DataPoint" begin
     test_SimpleDataPoint()
@@ -243,6 +269,7 @@ io = devnull
     test_slice_original()
     test_kmeans(io)
     test_kmeans_governor(io)
+    test_kmeans_album(io)
 end
 
 nothing
