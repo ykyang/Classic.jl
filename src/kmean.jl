@@ -52,6 +52,34 @@ struct Governor <: DataPoint
     end
 end
 
+struct Album <: DataPoint
+    dimension::Int64
+    original::Vector{Float64}
+    derived::Vector{Float64}
+
+    name::String
+    year::Int64
+    length::Float64
+    tracks::Float64
+
+    function Album(name::String, year::Int64, length::Float64, tracks::Float64)
+        dimension = 2
+        original = [length, tracks]
+        derived = [length, tracks]
+        new(dimension, original, derived, name, year, length, tracks)
+    end
+
+    function Album(original::Vector{Float64})
+        if 2 != length(original)
+            throw(DomainError("Length of vector must be 2"))
+        end
+        dimension = 2
+        derived = copy(original)
+        new(2, original, derived, "", 0, 0.0, 0.0)
+    end
+
+end
+
 """
     Base.:(==)(x::DataPoint, y::DataPoint)
 

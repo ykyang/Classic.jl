@@ -210,6 +210,23 @@ function test_kmeans_governor(io::IO)
     end
 end
 
+function test_Album()
+    p = Album("Got to Be There", 1972, 35.45, 10.0)
+    @test 2 == p.dimension
+    @test [35.45, 10.0] == p.original
+    @test [35.45, 10.0] == p.derived
+    @test "Got to Be There" == p.name
+    @test 1972 == p.year
+    @test 35.45 == p.length
+    @test 10.0 == p.tracks
+    
+    data = [35.45, 10.0]
+    p = Album(data)
+    @test 2 == p.dimension
+    @test data == p.original
+    @test data == p.derived
+end
+
 io = stdout
 io = devnull
 
@@ -218,6 +235,7 @@ io = devnull
     test_Cluster()
     test_KMeans()
     test_Governor()
+    test_Album()
 
     test_distance()
     test_set_original!()
