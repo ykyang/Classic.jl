@@ -27,7 +27,7 @@ export add!, index_of, is_goal, next_points
 
 include("kmean.jl")
 export Cluster, DataPoint, Governor, KMeans, SimpleDataPoint
-export distance, run!, slice_derived, slice_original
+export distance, run!, slice_derived, slice_original, slice_state
 
 include("algorithm.jl")
 export DijkstraResult

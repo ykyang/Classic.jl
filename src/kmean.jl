@@ -134,7 +134,7 @@ function KMeans(k::Int64, pointvec::Vector{P}) where {P<:DataPoint}
     #normalize_zscore!(me.pointvec)
     zscore_derived!(me.pointvec)
 
-    dimension_count = pointvec[1].dimension
+    #dimension_count = pointvec[1].dimension
     for i in 1:k
         rand_point = random_point(pointvec)
         cluster = Cluster(Vector{P}(), rand_point)
@@ -176,6 +176,16 @@ function slice_original(pointvec::Vector{P}, dimension) where {P<:DataPoint}
     end
 
     return originalvec
+end
+
+function slice_state(pointvec::Vector{Governor})
+    statevec = Vector{String}(undef, length(pointvec))
+
+    for (i,p) in enumerate(pointvec)
+        statevec[i] = p.state
+    end
+
+    return statevec
 end
 
 """
@@ -227,7 +237,7 @@ function zscore_derived!(pointvec::Vector{P}) where {P<:DataPoint}
 
     dimension = pointvec[1].dimension
     for dim_ind = 1:dimension
-        dimension_slice = slice_original(pointvec, dimension)
+        dimension_slice = slice_original(pointvec, dim_ind)
         mu = mean(dimension_slice)
         sigma = std(dimension_slice, corrected=false)
         zscores = zscore(dimension_slice, mu, sigma)
