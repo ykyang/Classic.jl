@@ -79,6 +79,16 @@ struct Album <: DataPoint
     end
 
 end
+function slice_name(pointvec::Vector{Album})
+    vec = Vector{String}(undef, length(pointvec))
+
+    for (i,p) in enumerate(pointvec)
+        vec[i] = p.name
+    end
+
+    return vec
+end
+
 
 """
     Base.:(==)(x::DataPoint, y::DataPoint)
