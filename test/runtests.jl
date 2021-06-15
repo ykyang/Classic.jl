@@ -17,4 +17,4 @@ end
 include("test_ch2.jl")
 include("test_ch4.jl")
 include("test_gene.jl")
-include("test_kmean.jl")
+include("test_kmeans.jl")
